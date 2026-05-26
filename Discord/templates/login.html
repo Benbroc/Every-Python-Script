@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body { display: flex; align-items: center; justify-content: center; background: var(--bg-4); }
+        .auth-box { 
+            background: var(--bg-3); 
+            padding: 32px; 
+            border-radius: 8px; 
+            width: 400px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: 1px solid var(--bg-1);
+        }
+        h2 { text-align: center; margin-bottom: 8px; color: var(--text-1); }
+        p { text-align: center; color: var(--text-3); margin-bottom: 20px; }
+        input { 
+            width: 100%; padding: 10px; margin: 10px 0; 
+            background: var(--bg-4); border: none; color: white; border-radius: 3px;
+        }
+        button { 
+            width: 100%; padding: 10px; background: var(--accent-blurple); 
+            border: none; color: white; border-radius: 3px; cursor: pointer; font-weight: bold;
+        }
+        .link { color: var(--accent-1); font-size: 0.9rem; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="auth-box">
+        <h2>Willkommen zurück!</h2>
+        <p>Wir freuen uns, dich wiederzusehen!</p>
+        <form method="POST">
+            <label>BENUTZERNAME</label>
+            <input type="text" name="username" required>
+            <label>PASSWORT</label>
+            <input type="password" name="password" required>
+            <button type="submit">Einloggen</button>
+        </form>
+        <div style="margin-top: 15px;">
+            <span style="color: var(--text-3)">Brauchst du einen Account?</span>
+            <a href="/register" class="link">Registrieren</a>
+        </div>
+    </div>
+</body>
+</html>

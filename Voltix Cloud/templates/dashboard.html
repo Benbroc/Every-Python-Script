@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Dashboard - MyCloud</title>
+</head>
+<body>
+
+    <div class="main-layout">
+        <header>
+            <div>
+                <h1 style="color:var(--primary);">Hallo, {{ session['user'] }}</h1>
+                <span class="badge">{{ role }}</span>
+            </div>
+            <div>
+                {% if role == 'admin' %}<a href="/admin" style="margin-right:20px; text-decoration:none; font-weight:bold; color:var(--text);">⚙️ Admin</a>{% endif %}
+                <a href="/logout" class="logout-link">Logout</a>
+            </div>
+        </header>
+
+        {% with msgs = get_flashed_messages() %}
+            {% for m in msgs %}<div style="padding:15px; background:#fee2e2; color:#ef4444; border-radius:10px; margin-bottom:10px;">{{ m }}</div>{% endfor %}
+        {% endwith %}
+
+        <main class="file-container">
+            <form action="/upload" method="post" enctype="multipart/form-data" class="upload-box">
+                <input type="file" name="file" required style="flex-grow:1; padding:10px; border:1px solid var(--border); border-radius:8px;">
+                <button type="submit">Datei hochladen</button>
+            </form>
+
+            <div class="file-list">
+                <h3>Deine Cloud-Dateien</h3>
+                {% if not files %}<p style="color:var(--text-muted);">Dein Speicher ist noch leer.</p>{% endif %}
+                <ul>
+                    {% for f in files %}
+                    <li>
+                        <strong>{{ f }}</strong>
+                        <div style="display:flex; gap:10px;">
+                            <a href="{{ url_for('download_file', filename=f) }}" class="btn-small-link" style="background:var(--primary);">Download</a>
+                            <a href="{{ url_for('delete_file', filename=f) }}" class="btn-small-link" style="background:var(--danger);" onclick="return confirm('Datei löschen?')">Löschen</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <div class="storage-fixed">
+        <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:bold;">
+            <span>Speicher: {{ used }} GB / {{ limit }} GB</span>
+            <span>{{ ((used/limit)*100)|round(1) }}%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ (used/limit)*100 }}%;"></div>
+        </div>
+    </div>
+
+</body>
+</html>

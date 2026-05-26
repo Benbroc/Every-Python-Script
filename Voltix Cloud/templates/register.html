@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Registrieren</title>
+</head>
+<body>
+    <div class="container">
+        <header><h1>Registrierung</h1><p>Sichere dir 20 GB Gratis-Speicher</p></header>
+        {% with msgs = get_flashed_messages() %}{% for m in msgs %}<div class="alert">{{m}}</div>{% endfor %}{% endwith %}
+        <form action="/register" method="post">
+            <div class="input-group"><label>Wunsch-Username</label><input type="text" name="username" required></div>
+            <div class="input-group"><label>Passwort</label><input type="password" name="password" required></div>
+            <button type="submit">Jetzt registrieren</button>
+        </form>
+        <footer style="margin-top:15px; text-align:center;"><a href="/login" class="link">Zurück zum Login</a></footer>
+    </div>
+</body>
+</html>

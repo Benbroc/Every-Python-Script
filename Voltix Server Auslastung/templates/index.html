@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Network System Monitor</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #0f0f0f; color: #eee; }
+        .container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+        .card { 
+            background: #1a1a1a; padding: 20px; border-radius: 12px; width: 160px; 
+            cursor: pointer; border: 1px solid #333; transition: 0.2s;
+        }
+        .card:hover { border-color: #007bff; background: #222; }
+        .value { font-size: 2em; font-weight: bold; color: #007bff; display: block; }
+        #details { 
+            margin: 30px auto; background: #1a1a1a; max-width: 650px; 
+            padding: 20px; border-radius: 12px; display: none; border: 1px solid #333;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border-bottom: 1px solid #333; text-align: left; }
+        th { color: #555; }
+        .pid-col { color: #888; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>PC Monitor (Netzwerk)</h1>
+    <p>Erreichbar unter: <code id="ip-hint">Lade IP...</code></p>
+    
+    <div class="container">
+        <div class="card" onclick="showDetails('cpu')">
+            <span>CPU</span>
+            <span id="cpu" class="value">--</span>%
+        </div>
+        <div class="card" onclick="showDetails('memory')">
+            <span>RAM</span>
+            <span id="ram" class="value">--</span>%
+        </div>
+        <div class="card" onclick="showDetails('disk')">
+            <span>Disk</span>
+            <span id="disk" class="value">--</span>%
+        </div>
+    </div>
+
+    <div id="details">
+        <h3 id="detail-title">Prozesse</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>PID</th>
+                    <th>Name</th>
+                    <th id="header-val">Last</th>
+                </tr>
+            </thead>
+            <tbody id="proc-body"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let currentMode = null;
+
+        async function refresh() {
+            const res = await fetch('/stats');
+            const data = await res.json();
+            document.getElementById('cpu').innerText = Math.floor(data.cpu_usage);
+            document.getElementById('ram').innerText = Math.floor(data.ram_usage);
+            document.getElementById('disk').innerText = Math.floor(data.disk_usage);
+            if(currentMode) loadProcs(currentMode);
+        }
+
+        async function showDetails(type) {
+            currentMode = type;
+            document.getElementById('details').style.display = 'block';
+            document.getElementById('header-val').innerText = type === 'cpu' ? 'CPU %' : 'RAM %';
+            loadProcs(type);
+        }
+
+        async function loadProcs(type) {
+            const res = await fetch('/processes/' + type);
+            const procs = await res.json();
+            const body = document.getElementById('proc-body');
+            body.innerHTML = '';
+            procs.forEach(p => {
+                const val = type === 'cpu' ? p.cpu_percent : p.memory_percent;
+                body.innerHTML += `<tr>
+                    <td class="pid-col">${p.pid}</td>
+                    <td>${p.name}</td>
+                    <td style="color:#007bff"><b>${val}%</b></td>
+                </tr>`;
+            });
+        }
+
+        // IP Adresse im UI anzeigen (optional)
+        document.getElementById('ip-hint').innerText = window.location.host;
+
+        setInterval(refresh, 2000);
+        refresh();
+    </script>
+</body>
+</html>

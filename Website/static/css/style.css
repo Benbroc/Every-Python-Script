@@ -1,0 +1,54 @@
+/* Alles Vorherige beibehalten */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: #121212; color: #ffffff; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 50px; background: #1a1a1a; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+.nav-logo { height: 80px; width: auto; transition: transform 0.3s; }
+.nav-logo:hover { transform: scale(1.05); }
+.nav-links { display: flex; align-items: center; }
+.nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; transition: 0.3s; }
+.nav-links a:hover { color: #ffaa00; }
+
+.discord-nav-btn { background-color: #5865F2; padding: 8px 15px; border-radius: 5px; display: flex; align-items: center; gap: 8px; }
+.discord-nav-btn:hover { background-color: #4752c4 !important; color: white !important; transform: scale(1.05); }
+
+.hero-section { text-align: center; padding: 80px 20px; background: linear-gradient(to bottom, #1a1a1a, #121212); border-bottom: 2px solid #333; }
+.hero-section h1 { font-size: 3.5rem; color: #ffaa00; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 3px; }
+.hero-section p { font-size: 1.2rem; color: #cccccc; margin-bottom: 30px; }
+
+.ip-container { display: inline-flex; align-items: center; background: #2a2a2a; border: 1px solid #444; border-radius: 8px; padding: 10px 10px 10px 25px; }
+#server-ip { font-size: 1.3rem; color: #fff; margin-right: 20px; font-weight: bold; }
+.copy-btn { width: auto; padding: 10px 20px; border-radius: 5px; background: #ffaa00; border: none; cursor: pointer; font-weight: bold; }
+
+.container { max-width: 1000px; margin: 20px auto 50px auto; padding: 20px; flex: 1; }
+.update-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.update-card { background: #1e1e1e; border-radius: 15px; overflow: hidden; border: 1px solid #333; transition: 0.3s; }
+.update-card:hover { transform: translateY(-5px); border-color: #ffaa00; }
+.update-card img { width: 100%; height: 200px; object-fit: cover; cursor: pointer; }
+.update-content { padding: 20px; }
+.update-content h2 { color: #ffaa00; margin-bottom: 10px; font-size: 1.5rem; }
+
+/* NEU: Datums-Anzeige Style */
+.update-date {
+    display: block;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+.modal-content { max-width: 85%; max-height: 85%; border-radius: 10px; box-shadow: 0 0 30px rgba(255, 170, 0, 0.3); }
+.close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 60px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+
+.admin-container { max-width: 600px; margin: 50px auto; background: #1e1e1e; padding: 40px; border-radius: 15px; text-align: center; }
+.admin-container input, .admin-container textarea { width: 100%; padding: 12px; margin: 10px 0; background: #2a2a2a; border: 1px solid #444; color: white; border-radius: 5px; font-family: inherit; }
+.file-upload { display: block; background: #333; padding: 15px; margin: 15px 0; cursor: pointer; border-radius: 5px; border: 1px dashed #666; }
+button { width: 100%; padding: 15px; background: #ffaa00; border: none; color: #121212; font-weight: bold; cursor: pointer; border-radius: 5px; transition: 0.3s; }
+button:hover { background: #ffcc00; }
+
+.admin-manage-list { margin-top: 20px; text-align: left; }
+.manage-item { display: flex; justify-content: space-between; align-items: center; background: #252525; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #333; }
+.delete-btn { background: #ff4444; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 0.9rem; font-weight: bold; transition: 0.3s; }
+.delete-btn:hover { background: #cc0000; transform: scale(1.05); }

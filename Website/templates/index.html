@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Default | Minecraft Server</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo-container">
+            <a href="/"><img src="{{ url_for('static', filename='img/logo.png') }}" class="nav-logo" alt="Dein Logo"></a>
+        </div>
+        <div class="nav-links">
+            <a href="DEINE DISCORD.GG HIER EINFÜGEN" target="_blank" class="discord-nav-btn"><i class="fab fa-discord"></i> Discord</a>
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <h1>Willkommen auf Deinen SEVRER</h1>
+        <p>Tritt dem Minecraft-Server bei und starte dein Abenteuer!</p>
+        <div class="ip-container">
+            <span id="server-ip">Your IP</span> 
+            <button onclick="copyIP()" id="copy-btn" class="copy-btn">IP Kopieren</button>
+        </div>
+    </header>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="fullImage">
+    </div>
+
+    <script>
+        function copyIP() {
+            var ipText = document.getElementById("server-ip").innerText;
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(ipText).then(showSuccess);
+            } else {
+                var textArea = document.createElement("textarea");
+                textArea.value = ipText;
+                textArea.style.position = "fixed"; textArea.style.left = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus(); textArea.select();
+                try { document.execCommand('copy'); showSuccess(); } catch (err) {}
+                document.body.removeChild(textArea);
+            }
+        }
+        function showSuccess() {
+            var btn = document.getElementById("copy-btn");
+            btn.innerText = "Kopiert! ✔";
+            btn.style.backgroundColor = "#4CAF50";
+            setTimeout(function() { btn.innerText = "IP Kopieren"; btn.style.backgroundColor = "#ffaa00"; }, 2000);
+        }
+        var modal = document.getElementById("imageModal");
+        var modalImg = document.getElementById("fullImage");
+        var closeBtn = document.getElementsByClassName("close")[0];
+        document.querySelectorAll('.zoomable').forEach(img => {
+            img.onclick = function() { modal.style.display = "flex"; modalImg.src = this.src; }
+        });
+        closeBtn.onclick = function() { modal.style.display = "none"; }
+        window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
+    </script>
+</body>
+</html>

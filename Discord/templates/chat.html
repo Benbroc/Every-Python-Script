@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midnight Discord Clone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <nav class="server-sidebar">
+            <div class="server-icon active" title="Direktnachrichten">
+                <img src="https://refact0r.github.io/midnight-discord/assets/Font_Awesome_5_solid_moon.svg" width="24">
+            </div>
+            
+            <div class="server-divider"></div>
+            
+            <div id="server-list-container">
+                </div>
+
+            <div class="server-icon add-server" onclick="toggleModal('server-modal')" title="Server hinzufügen">+</div>
+        </nav>
+
+        <aside class="channel-sidebar">
+            <div class="sidebar-header">
+                <h3>Midnight Chat</h3>
+            </div>
+            
+            <div class="channel-list">
+                <div class="channel-category">TEXTKANÄLE</div>
+                <div class="channel-item active"><span>#</span> allgemein</div>
+                <div class="channel-item"><span>#</span> projekte</div>
+                
+                <div class="channel-category">SPRACHKANÄLE</div>
+                <div class="channel-item voice" onclick="connectVC()"><span>🔊</span> Talk-Runde</div>
+            </div>
+
+            <div class="user-panel">
+                <div class="user-info">
+                    <div class="user-avatar"></div>
+                    <div class="user-details">
+                        <div class="username">{{ username }}</div>
+                        <div class="status">Online</div>
+                    </div>
+                </div>
+                <div class="user-settings">
+                    <a href="/logout" title="Abmelden" style="text-decoration:none; color:var(--text-3)">✕</a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="chat-main">
+            <div class="chat-header">
+                <span class="hashtag">#</span>
+                <span class="channel-name">allgemein</span>
+            </div>
+
+            <div class="message-list" id="message-container">
+                <div class="message-item system">
+                    <div class="content">Willkommen im #allgemein Chat, <strong>{{ username }}</strong>!</div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <button class="attach-btn">+</button>
+                    <input type="text" id="chat-input" placeholder="Nachricht an #allgemein">
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="server-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Server erstellen</h2>
+            <p>Dein Server ist der Ort, an dem du dich mit deinen Freunden triffst.</p>
+            <input type="text" id="new-server-name" placeholder="Name des Servers">
+            <div class="modal-footer">
+                <button class="btn-link" onclick="toggleModal('server-modal')">Abbrechen</button>
+                <button class="btn-primary" onclick="createNewServer()">Erstellen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        const username = "{{ username }}";
+        const messageContainer = document.getElementById('message-container');
+        const chatInput = document.getElementById('chat-input');
+
+        // Nachricht senden bei Enter
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && chatInput.value.trim() !== "") {
+                const msgData = {
+                    user: username,
+                    msg: chatInput.value
+                };
+                socket.emit('message', msgData);
+                chatInput.value = '';
+            }
+        });
+
+        // Nachricht empfangen
+        socket.on('message', (data) => {
+            const div = document.createElement('div');
+            div.className = 'message-item';
+            div.innerHTML = `
+                <div class="avatar-placeholder"></div>
+                <div class="msg-content">
+                    <div class="msg-user">${data.user} <span class="timestamp">heute um ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></div>
+                    <div class="msg-text">${data.msg}</div>
+                </div>
+            `;
+            messageContainer.appendChild(div);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        });
+
+        // Modal Funktionen
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        async function createNewServer() {
+            const name = document.getElementById('new-server-name').value;
+            if (!name) return;
+
+            const response = await fetch('/api/create_server', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ name: name })
+            });
+
+            if (response.ok) {
+                const server = await response.json();
+                addServerToUI(server);
+                toggleModal('server-modal');
+            }
+        }
+
+        function addServerToUI(server) {
+            const container = document.getElementById('server-list-container');
+            const icon = document.createElement('div');
+            icon.className = 'server-icon';
+            icon.innerText = server.name[0].toUpperCase();
+            icon.title = server.name;
+            container.appendChild(icon);
+        }
+
+        // Voice Chat Platzhalter
+        function connectVC() {
+            alert("Verbinde mit Voice Chat... (WebRTC Modul erforderlich)");
+        }
+    </script>
+</body>
+</html>

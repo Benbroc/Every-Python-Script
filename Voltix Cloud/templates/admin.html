@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Admin Panel</title>
+</head>
+<body>
+    <div class="container container-wide">
+        <header><h1>Nutzerverwaltung</h1><a href="/" class="link">ZUM DASHBOARD</a></header>
+        <table>
+            <tr><th>Username</th><th>Speicher (GB)</th><th>Aktion</th></tr>
+            {% for u in users %}
+            <tr>
+                <td>{{ u[1] }}</td>
+                <td>
+                    <form action="/admin/update" method="post" style="display:flex; gap:5px;">
+                        <input type="hidden" name="user_id" value="{{ u[0] }}">
+                        <input type="number" name="limit_gb" value="{{ (u[2]/1024)|int }}">
+                        <button type="submit" style="width:auto; padding:5px 10px;">OK</button>
+                    </form>
+                </td>
+                <td>{% if u[3] != 'admin' %}<a href="/admin/delete/{{ u[0] }}" style="color:red; text-decoration:none;">Löschen</a>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

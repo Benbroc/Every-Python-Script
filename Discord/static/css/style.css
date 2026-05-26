@@ -1,0 +1,123 @@
+/* Import der Midnight-Base-Logik */
+@import url('https://refact0r.github.io/midnight-discord/build/midnight.css');
+
+:root {
+    /* Schrift & Abstände aus der midnight.theme.css */
+    --font: 'figtree', sans-serif;
+    --gap: 12px;
+    --border-thickness: 1px;
+    
+    /* Midnight Farben extrahiert aus deiner Datei */
+    --text-1: hsl(220, 45%, 95%);
+    --text-2: hsl(220, 25%, 70%);
+    --text-3: hsl(220, 20%, 60%);
+    
+    --bg-1: hsla(220, 15%, 20%, 1); 
+    --bg-2: hsla(220, 15%, 16%, 1); 
+    --bg-3: hsla(220, 15%, 13%, 1); 
+    --bg-4: hsla(220, 15%, 10%, 1); /* Main Background */
+    
+    --accent-blurple: oklch(70% 0.1 215); /* Das Midnight-Blau */
+    --hover: hsla(221, 19%, 40%, 0.1);
+    --active: hsla(220, 19%, 40%, 0.2);
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: var(--font);
+    background-color: var(--bg-3);
+    color: var(--text-1);
+    overflow: hidden;
+}
+
+/* Das Layout-Grid wie im echten Discord */
+.app-container {
+    display: flex;
+    height: 100vh;
+    padding: var(--gap); /* Der typische Midnight-Abstand zwischen Panels */
+    box-sizing: border-box;
+    gap: var(--gap);
+}
+
+/* Server-Liste (Links) */
+.server-sidebar {
+    width: 72px;
+    background: var(--bg-4);
+    border-radius: var(--gap);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
+    border: var(--border-thickness) solid var(--bg-2);
+}
+
+/* Channel-Liste (Mitte-Links) */
+.channel-sidebar {
+    width: 240px;
+    background: var(--bg-3);
+    border-radius: var(--gap);
+    display: flex;
+    flex-direction: column;
+    border: var(--border-thickness) solid var(--bg-2);
+}
+
+/* Chat-Bereich (Rechts) */
+.chat-main {
+    flex-grow: 1;
+    background: var(--bg-4);
+    border-radius: var(--gap);
+    display: flex;
+    flex-direction: column;
+    border: var(--border-thickness) solid var(--bg-2);
+    overflow: hidden;
+}
+
+/* Chat Header */
+.chat-header {
+    height: 48px;
+    border-bottom: 2px solid var(--bg-3);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-weight: bold;
+}
+
+/* Nachrichten-Bereich */
+.message-list {
+    flex-grow: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.message-item {
+    margin-bottom: 12px;
+    padding: 4px 8px;
+    transition: background 0.2s;
+}
+
+.message-item:hover {
+    background: var(--message-hover);
+    border-radius: 4px;
+}
+
+/* Chat Eingabe */
+.chat-input-area {
+    padding: 0 16px 24px 16px;
+}
+
+.chat-input-wrapper {
+    background: var(--bg-2);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+input#chat-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-1);
+    outline: none;
+    font-size: 1rem;
+}

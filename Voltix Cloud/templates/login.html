@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container">
+        <header><h1>Cloud Login</h1></header>
+        {% with msgs = get_flashed_messages() %}{% for m in msgs %}<div class="alert">{{m}}</div>{% endfor %}{% endwith %}
+        <form action="/login" method="post">
+            <div class="input-group"><label>Username</label><input type="text" name="username" required></div>
+            <div class="input-group"><label>Passwort</label><input type="password" name="password" required></div>
+            <button type="submit">Einloggen</button>
+        </form>
+        <footer style="margin-top:15px; text-align:center;"><a href="/register" class="link">Account erstellen</a></footer>
+    </div>
+</body>
+</html>

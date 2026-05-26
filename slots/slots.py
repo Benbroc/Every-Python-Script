@@ -5,7 +5,7 @@ import json
 import os
 
 # ==================== CONFIGURATION ====================
-TOKEN = 'MTQzODE5MjQ3MjA1MTE1NTA2NA.GaXPZV.uCLnob4T085C_zAI7nQPrui5h6o4tZKwN_oORU'  # Ersetze dies mit deinem echten Bot-Token
+TOKEN = ''  # Ersetze dies mit deinem echten Bot-Token
 SLOTS_CHANNEL_ID_STR = "1506695102897066144"  # Deine Channel-ID
 GOD_USER_ID = 1304491059853656165  # Diese ID hat unendlich Coins
 START_COINS = 10

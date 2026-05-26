@@ -7,7 +7,7 @@ from groq import Groq
 # ==========================================
 # KONFIGURATION
 # ==========================================
-GROQ_API_KEY = "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"  # <--- HIER DEINEN KEY EINTRAGEN
+GROQ_API_KEY = "YOUR KEY"  # <--- HIER DEINEN KEY EINTRAGEN
 client = Groq(api_key=GROQ_API_KEY)
 
 MODELS = {
